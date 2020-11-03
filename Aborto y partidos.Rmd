@@ -1,13 +1,14 @@
 ---
 title: "Partidos y despenalización"
 output: html_document
+theme: hpstr
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#PRENDO LIBRERIAS
+##Prendo librerías
 
 ```{r librerias}
 
@@ -18,7 +19,7 @@ library(ggthemes)
 
 ```
 
-#LEVANTO DATOS
+##Levanto datos
 
 ```{r levanto datos}
 gs4_deauth()
