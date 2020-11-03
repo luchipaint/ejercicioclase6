@@ -1,12 +1,9 @@
 #PRENDO LIBRERIAS
 
 library(tidyverse)
-install.packages("ggforce")
 library(ggforce)
-install.packages("googlesheets4")
 library(googlesheets4)
 library(ggthemes)
-install.packages("janitor")
 
 #LEVANTO DATOS
 
@@ -18,12 +15,27 @@ janitor::clean_names(base)
 #ORDENO
 
 nuevabase <- base %>% 
-  select(Partido,AbortoLegal)
+  select(Partido,AbortoLegal) %>% 
+  group_by(Partido,AbortoLegal) %>% 
+  mutate(value = n()) %>% 
+  ungroup()
+
 
 #GRAFICO
 
-gather_set_data(nuevabase, 1:2) %>% 
-  ggplot(aes(Partido,AbortoLegal)) +
+nuevabaseparalell <- nuevabase %>% 
+  gather_set_data(1:2)
+
+ggplot(nuevabaseparalell,
+       aes(x, id = id, split = y, value = value)) +
   geom_parallel_sets(aes(fill = Partido), alpha = 0.5, axis.width = 0.1) +
-  geom_parallel_sets_axes(axis.width = 0.1)
+  geom_parallel_sets_axes(axis.width = 0.1) +
+  geom_parallel_sets_labels(colour = 'white') +
+  theme_wsj() +
+  theme(axis.text.y = element_blank()) +
+  labs(title = "Posición frente a la despenalización del aborto", 
+       subtitle = "Según partido político", 
+       caption = "Datos de Nuevo Congreso 2020")
   
+  
+
